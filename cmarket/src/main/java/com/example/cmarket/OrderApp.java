@@ -5,6 +5,8 @@ import com.example.cmarket.order.OrderService;
 import com.example.cmarket.user.User;
 import com.example.cmarket.user.UserGrade;
 import com.example.cmarket.user.UserService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class OrderApp {
 
@@ -28,9 +30,20 @@ public class OrderApp {
 //            System.out.println("2등급 회원으로 5000 -> " + discountedPrice);
 //        }
 
-        AppConfig appConfig = new AppConfig();
-        UserService userService = appConfig.userService();
-        OrderService orderService = appConfig.orderService();
+        /**
+         * 객체 직접 생성 후 메서드 호출 방식
+         */
+//        AppConfig appConfig = new AppConfig();
+//        UserService userService = appConfig.userService();
+//        OrderService orderService = appConfig.orderService();
+
+        /**
+         * 스프링 컨테이너 DI
+         */
+
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        UserService userService = ac.getBean("userService", UserService.class);
+        OrderService orderService = ac.getBean("orderService", OrderService.class);
 
         Long userId = 0L;
         User user = new User(userId, "kimlucky", UserGrade.GRADE_1);
